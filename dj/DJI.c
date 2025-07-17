@@ -9,16 +9,16 @@ void DJI_Init(){
 	for (int i = 0; i < 8; i++)
     {
 		
-		hDJI[i].speedPID.KP = 1.2;  //12  0.7差一点
-        hDJI[i].speedPID.KI = 0.0015;  //0.2
-        hDJI[i].speedPID.KD = 0.001;  //5
-        hDJI[i].speedPID.outputMax = 10000;  //8000//4000    pid=0.3  0.0005  0.05
+		hDJI[i].speedPID.KP = 12.0;  //12  0.7差一点
+        hDJI[i].speedPID.KI = 0.2;  //0.2
+        hDJI[i].speedPID.KD = 5;  //5
+        hDJI[i].speedPID.outputMax = 20000;  //8000//4000    pid=0.3  0.0005  0.05
 //1200
 
-        hDJI[i].posPID.KP = 6.0f;   //15  //4  //P=20.0  I=0.1
+        hDJI[i].posPID.KP = 15.0f;   //15  //4  //P=20.0  I=0.1
         hDJI[i].posPID.KI = 0.0f;    //0.3 //60 //0.015
         hDJI[i].posPID.KD = 0.0f;
-        hDJI[i].posPID.outputMax = 20000;//3000
+        hDJI[i].posPID.outputMax = 50000;//3000
 
 		/*
         hDJI[i].speedPID.KP = 12;  //12

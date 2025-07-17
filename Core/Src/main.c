@@ -103,8 +103,8 @@ int main(void)
   HAL_UART_Receive_IT(&huart2, usart2_rx, 1);
   CANFilterInit(&hcan1);
   RetargetInit(&huart3);
-  hDJI[3].motorType = M3508;//2006
-  hDJI[1].motorType = M2006;//2006
+  //hDJI[3].motorType = M3508;//2006
+  hDJI[1].motorType = M2006 ;
   DJI_Init();
   HAL_Delay(2000);
   /* USER CODE END 2 */
@@ -116,25 +116,28 @@ int main(void)
     
     STP_23L_Decode(Rxbuffer_1, &Lidar1);
     STP_23L_Decode(Rxbuffer_2, &Lidar2);
-    jihuangpositionServo(2790,&hDJI[3],&Lidar1);
-    //jihuangpositionServo(20.5,&hDJI[1],&Lidar2);
-    printf("%f",Lidar1.distance_aver);
+    //jihuangpositionServo(2800,&hDJI[3],&Lidar1);
+    jihuangpositionServo(500,&hDJI[1],&Lidar2);
+    //speedServo(2000,&hDJI[1]);
+    //printf("%f",Lidar1.distance_aver);
     
-    /*
+    
     CanTransmit_DJI_1234(&hcan1,
                              -1 * hDJI[1].speedPID.output,
                              hDJI[1].speedPID.output,
                             0,
                             0);
-                            */
-            
+                           
+            /*
     CanTransmit_DJI_1234(&hcan1,
                              0,
                              0,
                             -1 * hDJI[3].speedPID.output,
                             hDJI[3].speedPID.output);
+                             */
                             
-    printf("%f,%f\n",hDJI[3].posPID.output,hDJI[3].speedPID.output);
+    //printf("%f,%f\n",hDJI[3].posPID.output,hDJI[3].speedPID.output);
+    printf("%f,%f\n",Lidar2.distance_aver,hDJI[1].FdbData.rpm);
     HAL_Delay(1);
     /* USER CODE END WHILE */
 
