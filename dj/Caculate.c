@@ -61,3 +61,10 @@ void jihuangpositionServo(float ref, DJI_t * motor,LidarPointTypedef *lidardata)
 	PID_Calc(&motor->speedPID);
 
 }
+
+void pid_reset(PID_t *pid, float kp, float ki, float kd)
+{
+    pid->KP       = kp;
+    pid->KI       = ki;
+    pid->KD       = kd;
+}

@@ -4,14 +4,17 @@
 #include "usart_receive.h"
 uint8_t Rxbuffer_1[195];
 uint8_t Rxbuffer_2[195];
+uint8_t Rxbuffer_6[195];
 
 LidarPointTypedef Lidar1;
 LidarPointTypedef Lidar2;
+LidarPointTypedef Lidar6;
 
 uint16_t UartFlag[6];
+
 uint8_t usart1_rx[1];
 uint8_t usart2_rx[1];
-
+uint8_t usart6_rx[1];
 uint16_t inner_ring_flag;
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
@@ -72,5 +75,33 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         } else {
         };
         HAL_UART_Receive_IT(&huart2, usart2_rx, 1);
+    }
+    if (huart->Instance == USART6) {
+        static uint16_t u6state = 0; // 状态机计数
+        static uint16_t crc6    = 0; // 校验和
+        uint8_t tmp6            = usart6_rx[0];
+        if (u6state < 4) {
+            if (tmp6 == 0xAA) {
+                Rxbuffer_6[u6state] = tmp6;
+                u6state++;
+
+            } else {
+                u6state = 0;
+            }
+        } else if (u6state < 194) {
+            Rxbuffer_6[u6state] = tmp6;
+            u6state++;
+            crc6 += tmp6;
+        } else if (u6state == 194) {
+            Rxbuffer_6[u6state] = tmp6;
+            if (tmp6 == crc6 % 256) {
+                UartFlag[3] = 1;
+            }
+            u6state = 0;
+            crc6    = 0;
+        } else {
+        };
+
+        HAL_UART_Receive_IT(&huart6, usart6_rx, 1);
     }
 }
